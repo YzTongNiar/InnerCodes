@@ -45,7 +45,15 @@ for i=1:1:length(del)
 end
 
 % Plot Fer vs. Erasure Rate
-semilogy(del, fer,'o-');
+set(0,'defaultTextFontSize', 12)
+set(0,'defaultAxesFontSize', 12)
+set(0,'defaultAxesFontName','Times')
+set(0,'defaultTextFontName','Times')
+set(0,'defaultFigurePaperPositionMode','auto')
+set(0,'DefaultFigurePaperType','<custom>')
+set(0,'DefaultFigurePaperSize',[14.5 7.7])
+
+semilogy(del, fer,'k-v','linewidth',1);
 xlabel('DEL');
 ylabel('FER');
 title('FER vs DEL with BEC channel');
