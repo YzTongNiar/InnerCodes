@@ -4,8 +4,7 @@
 % dSource: data source
 % H: LDPC generate Matrix
 % c: parity check bits
-
-function [c, newH] = test(dSource, H)
+function [c, newH] = makeParityChk(dSource, H)
 
 % give the size of generate matrix
 [M, N] = size(H);
@@ -27,6 +26,7 @@ for i = 1:M
     rowIndex = find(r == i);
     % minimum product
     [x, ix] = min(colWeight(c(rowIndex))*rowWeight);
+    [x, ix] = min(colWeight(c(rowIndex))*rowWeight);
     % according to the index rearrange F
     chosenCol = c(rowIndex(ix)) + (i - 1);
     % H, F rearrange
@@ -40,7 +40,8 @@ for i = 1:M
     L(i:end, i) = F(i:end, i);
     U(1:i, i) = F(1:i, i);
     if i < M           
-         % in the i-th column, find the index of next non-zero entry
+        % in the i-th column, find the index of next non-zero entry
+        [r2, c2] = find(F((i + 1):end, i));          
         [r2, c2] = find(F((i + 1):end, i));          
         % insert a row
         F((i + r2), :) = mod(F((i + r2), :) + repmat(F(i, :), length(r2), 1), 2);
@@ -51,9 +52,12 @@ end
 z = mod(H(:, (N - M) + 1:end)*dSource, 2);
 
 % Parity Check Bit
-c = mod(U\(L\z), 2); 
+c = mod(U\(L\z), 2);
 
 % return parity check matrix 
 newH = H;
+
 end
+
+
 

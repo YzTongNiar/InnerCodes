@@ -1,35 +1,34 @@
 % The function generates a LDPC generating matrix, 
 % given size (M*N) & ones per column
-function [H] = makeLdpc(M, N, onePerCol)
+function H = makeLdpc(M, N, onePerCol)
 
 % calculate the number of ones per row
 onePerRow = (N/M)*onePerCol;
 for i = 1:N
-    onesInCol(:,i) = randperm(M)';
+    onesInCol(:, i) = randperm(M)';
 end
 
 % generate non-zero elements index
-r = reshape(onesInCol(1:onePerCol,:),N*onePerCol,1);
-tmp = repmat(1:N,onePerCol,1);% check
-c = reshape(tmp,N*onePerCol,1);
+r = reshape(onesInCol(1:onePerCol, :), N*onePerCol, 1);
+tmp = repmat([1:N], onePerCol, 1);
+c = reshape(tmp, N*onePerCol, 1);
 
 % Row index
 [r, ix] = sort(r);
 
 % generate Col index according to Row index
 for i = 1:N*onePerCol
-    cSort(i,:) = c(ix(i));
+    cSort(i, :) = c(ix(i));
 end
 
 % generate new Row index
-tmp = repmat(1:M, onePerRow, 1);
-r = reshape(tmp, N*onePerCol, 1);
-
+tmp = repmat([1:M], onePerRow, 1);
+r = reshape(tmp, N*onePerCol, 1);   
 % generate Sparsity Matrix
 
 % eliminate consecutive ones
-S = and(sparse(r, cSort, 1, M, N), ones(M, N)); % check
-H = full(S); %check 
+S = and(sparse(r, cSort, 1, M, N), ones(M, N));
+H = full(S);
 
 % check whether exits a row has only ones or no ones
 for i = 1:M
@@ -44,7 +43,6 @@ for i = 1:M
             H(i, n(i)) = 1;
     end
 end
-
 % elimibate four 4-cycle
 for i = 1:M
     % find Row-Col Pair
@@ -67,5 +65,5 @@ for i = 1:M
         end
     end
 end
-
+    
 end

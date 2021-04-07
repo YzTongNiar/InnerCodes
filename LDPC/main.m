@@ -1,6 +1,6 @@
 % LDPC Simulation under Erasure Channel
 clc; 
-clear;
+clear all;
 
 % The Size of LDPC Generate Matrix
 M = 64;
@@ -16,7 +16,7 @@ del = 0.2:0.05:0.4;
 iter = 50;
 
 % The Number of Frames (1 frame = 64 bits)
-frame = 500;
+frame = 30;
 
 % Generate LDPC Generate Matrix
 H = makeLdpc(M, N, onePerCol);
@@ -25,6 +25,7 @@ H = makeLdpc(M, N, onePerCol);
 for i=1:1:length(del)
    fer(i) = 0;
    error(i) = 0;
+   
     % Randomly generate 0/1 as source data
    dSource = round(rand(M, frame));
    for j = 1:frame  
@@ -43,17 +44,8 @@ for i=1:1:length(del)
    end
    fer(i)=error(i)/frame;
 end
-
-% Plot Fer vs. Erasure Rate
-set(0,'defaultTextFontSize', 12)
-set(0,'defaultAxesFontSize', 12)
-set(0,'defaultAxesFontName','Times')
-set(0,'defaultTextFontName','Times')
-set(0,'defaultFigurePaperPositionMode','auto')
-set(0,'DefaultFigurePaperType','<custom>')
-set(0,'DefaultFigurePaperSize',[14.5 7.7])
-
-semilogy(del, fer,'k-v','linewidth',1);
+semilogy(del, fer,'o-');
 xlabel('DEL');
 ylabel('FER');
 title('FER vs DEL with BEC channel');
+
